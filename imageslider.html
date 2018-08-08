@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head >
+        <h1 style="text-align:center" id="heading"></h1>
+    </head>
+
+
+
+<style>
+
+    .dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+    .active {
+    background-color: #574848;
+    }
+  
+
+    .prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 40%;
+    width: auto;
+    padding: 16px;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0 3px 3px 0;
+    }
+
+
+    .next {
+    right: 30%;
+    border-radius: 3px 0 0 3px;
+    }
+
+    .prev{
+        left: 30%;
+    }
+
+</style>
+
+
+
+<body>
+<div>
+<p id="description"></p>
+
+</div>
+
+<div id="imageslider" style="text-align:center">
+        <div class="images">
+                <img id="image1"  style="width:40%">
+                </div>
+        <div class="images">
+                <img id="image2" style="width: 40%">
+            </div>
+        <div class="images"> <img id="image3" style="width: 40%">
+            </div>
+    </div>
+</div>
+<div style="text-align:center">
+        <span class="dot"  onclick="showslide(0)"></span> 
+        <span class="dot" onclick="showslide(1)"></span> 
+        <span class="dot" onclick="showslide(2)"></span> 
+</div>
+
+<div>
+    <a class="prev" onclick="Slides(1)">&#10094;</a>
+    <a class="next" onclick="Slides(0)">&#10095;</a>
+</div>
+
+
+
+
+<script>
+window.onload= function imgload(){
+    
+var api = "https://demo6835492.mockable.io/getPageInfo";
+//var jsonString = JSON.stringify(formdata);
+var response;
+//var type = "application/JSON";
+
+
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        response=JSON.parse(this.responseText);
+        document.title=response.pageMetaTitle;
+        document.body.style.backgroundColor=response.pageBackgroundColor;
+        var heading=document.getElementById("heading");
+        heading.innerText=response.titleText;
+        heading.style.fontSize=response.titleFontSize;
+        heading.style.color=response.titleColor;
+        var description=document.getElementById("description");
+        description.innerText=response.descriptionText;
+       description.style.fontSize=response.descriptionSize;
+        description.color=response.descriptionColor;
+        var str="image";
+        var c=1;
+        stri =str+c;
+            response.images.forEach(element => {
+                document.getElementById(stri).src=element;
+                c=c+1;
+                stri=str+c;
+          
+        });
+       
+        
+     
+    }
+};
+xhttp.open("GET",api, true);
+xhttp.send();
+
+
+}
+
+//windows.onload=flag=0;
+slideIndex=0;
+imageSlides();
+var slides = document.getElementsByClassName("images");
+function Slides(n){
+    if(n==0){
+        slideIndex=slideIndex;
+        imageSlides();
+        //setTimeout(imageSlides, 4000);
+
+    }
+    else if(n==1){
+        slideIndex=slideIndex-2;
+        if (slideIndex<0){
+            slideIndex=slides.length-1;
+            }
+            imageSlides();
+            //setTimeout(imageSlides, 4000);
+    }
+}
+
+function showslide(n){
+    slideIndex=n;
+    imageSlides();
+   // setTimeout(imageSlides, 4000);
+}
+
+
+function imageSlides() {
+    var i;
+    var slides = document.getElementsByClassName("images");
+    var dots = document.getElementsByClassName("dot");
+    for (i = 0; i < slides.length; i++) {
+       slides[i].style.display = "none";  
+    }
+       
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+//    if(flag==0){
+    slideIndex++;
+    if (slideIndex > slides.length) {slideIndex = 1;}
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+    
+    setTimeout(imageSlides, 4000); 
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+</html>
