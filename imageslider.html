@@ -124,13 +124,16 @@ xhttp.send();
 }
 
 //windows.onload=flag=0;
+var t;
 slideIndex=0;
 imageSlides();
 var slides = document.getElementsByClassName("images");
 function Slides(n){
     if(n==0){
         slideIndex=slideIndex;
+       clearTimeout(t);
         imageSlides();
+
         //setTimeout(imageSlides, 4000);
 
     }
@@ -139,6 +142,7 @@ function Slides(n){
         if (slideIndex<0){
             slideIndex=slides.length-1;
             }
+            clearTimeout(t);
             imageSlides();
             //setTimeout(imageSlides, 4000);
     }
@@ -146,6 +150,7 @@ function Slides(n){
 
 function showslide(n){
     slideIndex=n;
+    clearTimeout(t);
     imageSlides();
    // setTimeout(imageSlides, 4000);
 }
@@ -168,7 +173,7 @@ function imageSlides() {
     slides[slideIndex-1].style.display = "block";  
     dots[slideIndex-1].className += " active";
     
-    setTimeout(imageSlides, 4000); 
+    t=setTimeout(imageSlides, 4000); 
 
 
 }
